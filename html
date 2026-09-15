@@ -1,0 +1,754 @@
+<title>Чарівний Простір</title>
+<style>
+  @font-face{
+    font-family:'Mirra';
+    src:url('fonts/Mirra.otf') format('opentype');
+    font-weight:400; font-style:normal; font-display:swap;
+  }
+  @font-face{
+    font-family:'Hoefler Text';
+    src:url('fonts/HoeflerText-Regular.otf') format('opentype');
+    font-weight:400; font-style:normal; font-display:swap;
+  }
+  @font-face{
+    font-family:'Hoefler Text';
+    src:url('fonts/HoeflerText-Black.otf') format('opentype');
+    font-weight:700; font-style:normal; font-display:swap;
+  }
+  @font-face{
+    font-family:'Hoefler Text';
+    src:url('fonts/HoeflerText-Italic.otf') format('opentype');
+    font-weight:400; font-style:italic; font-display:swap;
+  }
+  @font-face{
+    font-family:'Hoefler Text';
+    src:url('fonts/HoeflerText-BlackItalic.otf') format('opentype');
+    font-weight:700; font-style:italic; font-display:swap;
+  }
+
+  :root{
+    --teal-950:#0d3536;
+    --teal-900:#195758;
+    --teal-850:#1c6062;
+    --teal-800:#22696b;
+    --panel:rgba(255,255,255,.055);
+    --panel-strong:rgba(255,255,255,.09);
+    --panel-border:rgba(253,245,163,.17);
+    --gold:#fdf5a3;
+    --gold-dim:#cdc384;
+    --pale:#d0e5f0;
+    --pale-dim:rgba(208,229,240,.68);
+    --pale-faint:rgba(208,229,240,.4);
+    --ink:#0c2627;
+    --font-display:'Mirra','Hoefler Text',Georgia,serif;
+    --font-serif:'Hoefler Text',Georgia,'Times New Roman',serif;
+    color-scheme: dark;
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    background:
+      radial-gradient(ellipse 90% 60% at 50% -10%, rgba(253,245,163,.05), transparent 60%),
+      radial-gradient(ellipse 80% 50% at 85% 15%, rgba(255,255,255,.035), transparent 55%),
+      var(--teal-900);
+    color:var(--pale);
+    font-family:var(--font-serif);
+    font-size:16px;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    *{animation-duration:.001ms !important; transition-duration:.001ms !important;}
+  }
+
+  img{max-width:100%}
+  [hidden]{display:none!important}
+
+  a{color:inherit}
+  ::selection{background:var(--gold); color:var(--ink)}
+
+  .wrap{
+    max-width:1120px;
+    margin-inline:auto;
+    padding-inline:clamp(20px,5vw,64px);
+  }
+
+  h1,h2,h3{margin:0; text-wrap:balance; font-weight:400}
+
+  .eyebrow{
+    font-family:var(--font-serif);
+    font-weight:700;
+    font-size:.72rem;
+    letter-spacing:.22em;
+    text-transform:uppercase;
+    color:var(--gold-dim);
+  }
+
+  .section-heading{
+    font-family:var(--font-display);
+    font-weight:400;
+    text-transform:uppercase;
+    font-size:clamp(1.9rem,1.3rem + 2.6vw,2.9rem);
+    color:var(--gold);
+    letter-spacing:.015em;
+    line-height:1.15;
+  }
+
+  .lede{
+    color:var(--pale-dim);
+    font-size:clamp(1rem,.94rem + .3vw,1.12rem);
+    max-width:62ch;
+    line-height:1.75;
+  }
+
+  .btn{
+    display:inline-flex; align-items:center; justify-content:center; gap:.55em;
+    font-family:var(--font-serif); font-weight:700; font-size:.95rem;
+    letter-spacing:.03em;
+    padding:.9em 1.6em;
+    border-radius:2px;
+    border:1px solid transparent;
+    cursor:pointer;
+    text-decoration:none;
+    transition:transform .18s ease, background .18s ease, border-color .18s ease, opacity .18s ease;
+  }
+  .btn:active{transform:translateY(1px)}
+  .btn-primary{background:var(--gold); color:var(--ink);}
+  .btn-primary:hover{background:#fffbc8}
+  .btn-ghost{background:transparent; color:var(--pale); border-color:var(--pale-faint);}
+  .btn-ghost:hover{border-color:var(--pale); background:var(--panel)}
+  .btn:focus-visible{outline:2px solid var(--gold); outline-offset:3px}
+  .btn[disabled]{opacity:.55; cursor:not-allowed}
+
+  /* ---------- header ---------- */
+  header{
+    position:sticky; top:env(safe-area-inset-top,0px); z-index:50;
+    background:rgba(13,53,54,.82);
+    backdrop-filter:blur(10px) saturate(1.1);
+    border-bottom:1px solid rgba(253,245,163,.1);
+  }
+  .nav{
+    display:flex; align-items:center; justify-content:space-between;
+    gap:1rem; padding-block:.85rem;
+  }
+  .brand{
+    font-family:var(--font-serif); font-weight:700; letter-spacing:.06em;
+    font-size:.95rem; text-transform:uppercase; color:var(--gold);
+    text-decoration:none; white-space:nowrap;
+  }
+  .navlinks{
+    display:flex; flex-wrap:wrap; gap:1.6rem; list-style:none; margin:0; padding:0;
+  }
+  .navlinks a{
+    text-decoration:none; color:var(--pale-dim); font-size:.88rem;
+    letter-spacing:.04em; text-transform:uppercase; font-weight:700;
+    transition:color .15s ease;
+  }
+  .navlinks a:hover{color:var(--gold)}
+  .navcall{
+    flex-shrink:0; color:var(--gold); text-decoration:none; font-size:.85rem;
+    font-weight:700; display:flex; align-items:center; gap:.4em;
+    border:1px solid var(--panel-border); padding:.5em .8em; border-radius:2px;
+    white-space:nowrap;
+  }
+  .navcall svg{width:14px; height:14px}
+  .navcall:hover{background:var(--panel)}
+  @media (max-width:640px){
+    .navlinks{display:none}
+    .nav{gap:.6rem}
+    .brand{font-size:.82rem}
+    .navcall{font-size:.78rem; padding:.5em .65em}
+  }
+
+  /* ---------- hero ---------- */
+  .hero{padding-block:clamp(3.5rem,4vw + 2rem,6rem) clamp(2.5rem,3vw,3.5rem); text-align:center}
+  .hero-title{
+    font-family:var(--font-display);
+    font-weight:400;
+    color:var(--gold);
+    text-transform:uppercase;
+    line-height:1.02;
+    letter-spacing:.01em;
+  }
+  .hero-title .l1{display:block; font-size:clamp(2.6rem,1.6rem + 5.2vw,5.6rem)}
+  .hero-title .l2{display:block; font-size:clamp(1.5rem,1.1rem + 2.2vw,2.7rem); margin-top:.25em}
+
+  .flourish{
+    color:var(--pale-faint);
+    width:min(420px,80%);
+    margin-inline:auto;
+  }
+  .flourish svg{display:block; width:100%; height:auto}
+
+  .hero-name{
+    font-family:var(--font-serif); font-weight:700; text-transform:uppercase;
+    letter-spacing:.14em; color:var(--gold-dim); font-size:.85rem; margin-top:1.6rem;
+  }
+  .hero-name span{display:block; font-size:.78rem; font-weight:400; color:var(--pale-dim); letter-spacing:.1em; margin-top:.35em}
+
+  .hero-lede{
+    margin:1.6rem auto 0; max-width:46ch; color:var(--pale-dim);
+    font-size:clamp(1rem,.95rem + .25vw,1.1rem); line-height:1.75;
+  }
+
+  .hero-cta{
+    display:flex; flex-wrap:wrap; gap:1rem; justify-content:center; margin-top:2.3rem;
+  }
+
+  /* ---------- divider ---------- */
+  .divider{padding-block:.5rem 0}
+  .divider .flourish{width:min(320px,60%); color:rgba(253,245,163,.35)}
+
+  /* ---------- about ---------- */
+  .about{padding-block:clamp(3rem,4vw,5rem)}
+  .about-grid{
+    display:grid; grid-template-columns:1.1fr 1.4fr; gap:clamp(2rem,4vw,4rem);
+    align-items:start;
+  }
+  @media (max-width:760px){ .about-grid{grid-template-columns:1fr} }
+  .about-body p{margin:0 0 1.1em; color:var(--pale-dim)}
+  .about-body p:last-child{margin-bottom:0}
+  .tags{list-style:none; margin:1.6rem 0 0; padding:0; display:flex; flex-wrap:wrap; gap:.6rem}
+  .tags li{
+    border:1px solid var(--panel-border); border-radius:2px; padding:.5em .9em;
+    font-size:.78rem; letter-spacing:.07em; text-transform:uppercase; color:var(--pale);
+    background:var(--panel);
+  }
+
+  /* ---------- services ---------- */
+  .services{padding-block:clamp(3rem,4vw,5rem)}
+  .services-head{margin-bottom:2.2rem}
+  .tabs{
+    display:flex; flex-wrap:wrap; gap:.55rem; margin:1.8rem 0 2.4rem; padding:0; list-style:none;
+  }
+  .tab{
+    font-family:var(--font-serif); font-weight:700; font-size:.82rem;
+    letter-spacing:.05em; text-transform:uppercase;
+    padding:.6em 1.1em; border-radius:999px; border:1px solid var(--panel-border);
+    background:transparent; color:var(--pale-dim); cursor:pointer;
+    transition:all .18s ease;
+  }
+  .tab:hover{color:var(--pale); border-color:var(--pale-faint)}
+  .tab[aria-selected="true"]{background:var(--gold); color:var(--ink); border-color:var(--gold)}
+  .tab:focus-visible{outline:2px solid var(--gold); outline-offset:2px}
+
+  .menu-note{color:var(--pale-faint); font-size:.85rem; font-style:italic; margin:0 0 1.6rem; max-width:60ch}
+
+  .menu-list{list-style:none; margin:0; padding:0; display:flex; flex-direction:column}
+  .menu-item{
+    display:grid; grid-template-columns:1fr auto; gap:.2em 1em;
+    padding-block:1.35rem; border-top:1px solid rgba(253,245,163,.12);
+  }
+  .menu-item:last-child{border-bottom:1px solid rgba(253,245,163,.12)}
+  .menu-name{
+    font-family:var(--font-serif); font-weight:700; color:var(--pale);
+    font-size:1.05rem;
+  }
+  .menu-price{
+    font-family:var(--font-serif); font-weight:700; color:var(--gold);
+    font-size:1.05rem; font-variant-numeric:tabular-nums; white-space:nowrap;
+  }
+  .menu-meta{grid-column:1/-1; display:flex; flex-wrap:wrap; gap:.4em 1.2em; align-items:baseline}
+  .menu-duration{
+    font-size:.76rem; letter-spacing:.08em; text-transform:uppercase; color:var(--pale-faint);
+  }
+  .menu-desc{
+    grid-column:1/-1; font-style:italic; color:var(--pale-dim); font-size:.92rem;
+    max-width:64ch; margin-top:.15em;
+  }
+
+  /* ---------- booking ---------- */
+  .booking{padding-block:clamp(3rem,4vw,5rem)}
+  .booking-panel{
+    background:var(--panel); border:1px solid var(--panel-border); border-radius:6px;
+    padding:clamp(1.6rem,3vw,3rem);
+    display:grid; grid-template-columns:1fr 1.3fr; gap:clamp(2rem,4vw,3.5rem);
+  }
+  @media (max-width:760px){ .booking-panel{grid-template-columns:1fr} }
+
+  .booking-info p{color:var(--pale-dim); margin:1rem 0 0}
+  .booking-info .contact-line{
+    display:flex; align-items:center; gap:.6em; margin-top:1.1rem; font-size:.95rem;
+    text-decoration:none; color:var(--pale);
+  }
+  .booking-info .contact-line svg{width:16px; height:16px; flex-shrink:0; color:var(--gold-dim)}
+  .booking-info .contact-line:hover{color:var(--gold)}
+
+  form{display:flex; flex-direction:column; gap:1.1rem}
+  .field{display:flex; flex-direction:column; gap:.45rem}
+  .field label{
+    font-size:.74rem; letter-spacing:.09em; text-transform:uppercase; color:var(--pale-dim); font-weight:700;
+  }
+  .field input, .field select, .field textarea{
+    font-family:var(--font-serif); font-size:.98rem; color:var(--pale);
+    background:rgba(0,0,0,.15); border:1px solid var(--panel-border); border-radius:3px;
+    padding:.75em .9em; width:100%;
+  }
+  .field textarea{resize:vertical; min-height:4.5em}
+  .field input::placeholder, .field textarea::placeholder{color:var(--pale-faint)}
+  .field input:focus, .field select:focus, .field textarea:focus{
+    outline:2px solid var(--gold); outline-offset:1px; border-color:var(--gold);
+  }
+  .field-row{display:flex; gap:1rem}
+  @media (max-width:480px){ .field-row{flex-direction:column} }
+
+  .form-actions{display:flex; flex-wrap:wrap; gap:.8rem; align-items:center; margin-top:.3rem}
+  .status-msg{font-size:.86rem; color:var(--gold-dim); min-height:1.2em}
+  .status-msg.err{color:#f3b9a6}
+
+  /* ---------- contact / footer ---------- */
+  footer{
+    background:var(--teal-950); border-top:1px solid rgba(253,245,163,.12);
+    padding-block:clamp(2.6rem,4vw,3.6rem) 2rem; margin-top:clamp(3rem,4vw,5rem);
+  }
+  .footer-grid{
+    display:grid; grid-template-columns:1.2fr 1fr 1fr; gap:2.5rem;
+  }
+  @media (max-width:700px){ .footer-grid{grid-template-columns:1fr; gap:2rem} }
+  .footer-title{
+    font-family:var(--font-serif); font-weight:700; letter-spacing:.1em; text-transform:uppercase;
+    font-size:.78rem; color:var(--gold-dim); margin-bottom:1rem;
+  }
+  .footer-line{
+    display:flex; align-items:center; gap:.6em; text-decoration:none; color:var(--pale-dim);
+    font-size:.92rem; margin-bottom:.7rem;
+  }
+  .footer-line svg{width:15px; height:15px; flex-shrink:0; color:var(--gold-dim)}
+  .footer-line:hover{color:var(--pale)}
+  .social-row{display:flex; gap:.7rem; margin-top:.3rem}
+  .social-btn{
+    display:flex; align-items:center; justify-content:center;
+    width:38px; height:38px; border-radius:50%;
+    border:1px solid var(--panel-border); color:var(--pale-dim);
+    text-decoration:none; transition:all .18s ease;
+  }
+  .social-btn svg{width:17px; height:17px}
+  .social-btn:hover{color:var(--ink); background:var(--gold); border-color:var(--gold)}
+  .copyright{
+    text-align:center; color:var(--pale-faint); font-size:.78rem;
+    margin-top:2.6rem; padding-top:1.6rem; border-top:1px solid rgba(255,255,255,.06);
+  }
+
+  section[id]{scroll-margin-top:5.5rem}
+</style>
+
+<header>
+  <div class="wrap nav">
+    <a class="brand" href="#top">Чарівний Простір</a>
+    <ul class="navlinks">
+      <li><a href="#about">Про майстра</a></li>
+      <li><a href="#services">Послуги</a></li>
+      <li><a href="#booking">Запис</a></li>
+      <li><a href="#contact">Контакти</a></li>
+    </ul>
+    <a class="navcall" href="tel:+380685283811">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+      +38 068 528 3811
+    </a>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero wrap">
+    <p class="eyebrow">Космецевтика · Масаж · Wellness</p>
+    <h1 class="hero-title">
+      <span class="l1">Чарiвний Простiр</span>
+      <span class="l2">Краси та Релаксу</span>
+    </h1>
+
+    <div class="flourish" aria-hidden="true">
+      <svg viewBox="0 250 1500 115" xmlns="http://www.w3.org/2000/svg">
+        <path fill="currentColor" d="M 130.042969 308.640625 C 140.578125 308.675781 153.878906 308.78125 166.09375 309.085938 Z M 122.261719 302.132812 C 121 302.765625 108.28125 300.136719 106.28125 299.136719 C 104.285156 298.136719 93.296875 296.140625 73.324219 275.167969 C 73.324219 275.167969 94.296875 291.148438 100.289062 293.144531 C 106.28125 295.140625 117.269531 295.140625 120.265625 296.140625 C 123.261719 297.140625 124.261719 301.132812 122.261719 302.132812 M 686.078125 296.640625 C 686.078125 296.640625 679.09375 291.648438 644.167969 290.648438 C 644.140625 290.648438 644.117188 290.648438 644.09375 290.648438 C 643.050781 290.691406 620.125 291.691406 617.179688 293.644531 C 614.164062 295.640625 546.746094 293.144531 541.15625 293.644531 C 537.316406 293.984375 521.683594 295.558594 470.3125 318.46875 C 465.1875 320.753906 459.808594 322.410156 454.289062 323.410156 C 437.007812 326.542969 399.058594 331.894531 376.453125 323.605469 C 346.492188 312.621094 274.578125 312.621094 273.578125 311.621094 C 272.582031 310.621094 234.625 309.625 205.660156 298.636719 C 205.660156 298.636719 202.664062 296.640625 177.695312 296.640625 C 152.726562 296.640625 128.753906 295.640625 123.761719 292.644531 C 118.859375 289.703125 98.125 282.011719 86.097656 267.152344 C 85.308594 266.175781 84.308594 266.175781 84.019531 266.1875 C 82.621094 266.25 81.257812 267.277344 85.457031 272.210938 C 90.417969 278.039062 98.21875 284.195312 101.382812 286.601562 C 101.589844 286.757812 101.410156 287.078125 101.175781 286.976562 C 94.546875 284.082031 68.84375 271.734375 49.851562 246.699219 C 49.851562 246.699219 45.855469 242.621094 47.652344 250.683594 C 48.636719 255.09375 50.992188 259.082031 54.335938 262.117188 C 57.5 264.984375 61.269531 268.542969 61.835938 269.671875 C 62.835938 271.671875 60.835938 273.667969 64.832031 276.664062 C 68.828125 279.660156 97.792969 308.625 116.769531 308.625 C 120.167969 308.625 124.757812 308.625 130.035156 308.640625 C 130.035156 308.644531 127.257812 315.117188 132.25 316.117188 C 137.246094 317.113281 147.234375 318.113281 148.230469 322.109375 C 148.230469 322.109375 156.222656 330.097656 147.234375 331.097656 C 138.242188 332.097656 137.246094 334.09375 134.25 336.09375 C 131.253906 338.089844 124.261719 341.085938 120.265625 341.085938 C 116.269531 341.085938 112.273438 351.074219 115.273438 352.074219 C 118.269531 353.070312 117.269531 350.074219 124.261719 345.082031 C 131.253906 340.085938 136.746094 340.585938 139.742188 338.589844 C 142.738281 336.589844 142.738281 335.59375 144.734375 334.59375 C 146.734375 333.59375 156.074219 333.960938 158.144531 328.535156 C 160.21875 323.109375 160.21875 323.109375 158.21875 317.113281 C 156.222656 311.125 166.089844 309.089844 166.097656 309.085938 C 181.953125 309.488281 195.964844 310.234375 199.667969 311.621094 C 207.660156 314.617188 314.261719 332.027344 324.019531 329.101562 C 334.003906 326.105469 382.445312 341.585938 396.429688 342.585938 C 410.414062 343.582031 447.367188 340.585938 466.34375 333.59375 C 485.320312 326.605469 513.289062 311.621094 520.277344 310.621094 C 527.269531 309.625 547.246094 311.621094 562.226562 314.617188 C 577.210938 317.613281 596.1875 318.613281 605.175781 310.621094 C 614.164062 302.632812 623.152344 301.632812 633.140625 303.632812 C 643.128906 305.628906 665.101562 304.628906 673.09375 300.636719 C 679.085938 297.640625 683.394531 298.382812 685.171875 298.9375 C 685.9375 299.179688 686.808594 298.757812 686.949219 297.96875 C 687.027344 297.515625 686.855469 297.027344 686.078125 296.640625"/>
+        <path fill="currentColor" d="M 1334.128906 309.070312 C 1346.34375 308.761719 1359.644531 308.660156 1370.179688 308.625 Z M 1379.957031 296.121094 C 1382.953125 295.125 1393.9375 295.125 1399.929688 293.125 C 1405.925781 291.128906 1426.898438 275.148438 1426.898438 275.148438 C 1406.921875 296.121094 1395.9375 298.121094 1393.9375 299.121094 C 1391.941406 300.117188 1379.222656 302.746094 1377.957031 302.117188 C 1375.960938 301.117188 1376.960938 297.121094 1379.957031 296.121094 M 813.273438 297.949219 C 813.414062 298.742188 814.285156 299.164062 815.050781 298.921875 C 816.828125 298.363281 821.136719 297.621094 827.128906 300.617188 C 835.117188 304.613281 857.09375 305.613281 867.078125 303.613281 C 877.066406 301.617188 886.054688 302.613281 895.046875 310.605469 C 904.035156 318.59375 923.011719 317.597656 937.992188 314.601562 C 952.976562 311.605469 972.949219 309.605469 979.941406 310.605469 C 986.933594 311.605469 1014.898438 326.585938 1033.875 333.578125 C 1052.855469 340.570312 1089.808594 343.566406 1103.792969 342.566406 C 1117.773438 341.566406 1166.214844 326.085938 1176.203125 329.082031 C 1185.960938 332.007812 1292.5625 314.601562 1300.550781 311.605469 C 1304.257812 310.214844 1318.269531 309.46875 1334.125 309.070312 C 1334.128906 309.070312 1344 311.105469 1342.003906 317.097656 C 1340.003906 323.089844 1340.003906 323.089844 1342.074219 328.515625 C 1344.144531 333.941406 1353.488281 333.578125 1355.484375 334.578125 C 1357.484375 335.574219 1357.484375 336.574219 1360.480469 338.570312 C 1363.476562 340.570312 1368.96875 340.070312 1375.960938 345.0625 C 1382.953125 350.058594 1381.953125 353.054688 1384.949219 352.054688 C 1387.945312 351.054688 1383.949219 341.066406 1379.957031 341.066406 C 1375.960938 341.066406 1368.96875 338.070312 1365.972656 336.074219 C 1362.976562 334.078125 1361.976562 332.078125 1352.988281 331.082031 C 1344 330.082031 1351.988281 322.089844 1351.988281 322.089844 C 1352.988281 318.097656 1362.976562 317.097656 1367.96875 316.097656 C 1372.964844 315.101562 1370.1875 308.625 1370.1875 308.625 C 1375.464844 308.609375 1380.054688 308.609375 1383.453125 308.609375 C 1402.429688 308.609375 1431.394531 279.644531 1435.386719 276.648438 C 1439.382812 273.648438 1437.386719 271.652344 1438.386719 269.65625 C 1438.949219 268.523438 1442.722656 264.96875 1445.882812 262.097656 C 1449.230469 259.066406 1451.582031 255.074219 1452.566406 250.667969 C 1454.367188 242.605469 1450.371094 246.683594 1450.371094 246.683594 C 1431.378906 271.714844 1405.675781 284.066406 1399.046875 286.957031 C 1398.8125 287.058594 1398.632812 286.738281 1398.835938 286.582031 C 1402 284.175781 1409.800781 278.019531 1414.761719 272.191406 C 1418.964844 267.257812 1417.601562 266.230469 1416.199219 266.171875 C 1415.914062 266.160156 1414.914062 266.160156 1414.125 267.136719 C 1402.097656 281.992188 1381.363281 289.683594 1376.460938 292.628906 C 1371.464844 295.625 1347.496094 296.621094 1322.527344 296.621094 C 1297.554688 296.621094 1294.558594 298.621094 1294.558594 298.621094 C 1265.59375 309.605469 1227.640625 310.605469 1226.640625 311.605469 C 1225.644531 312.601562 1153.730469 312.601562 1123.765625 323.589844 C 1101.164062 331.878906 1063.214844 326.523438 1045.933594 323.394531 C 1040.414062 322.394531 1035.03125 320.734375 1029.910156 318.449219 C 978.539062 295.539062 962.90625 293.96875 959.0625 293.625 C 953.476562 293.125 886.054688 295.625 883.042969 293.625 C 880.09375 291.671875 857.171875 290.675781 856.128906 290.632812 C 856.105469 290.628906 856.082031 290.628906 856.054688 290.628906 C 821.128906 291.632812 814.144531 296.621094 814.144531 296.621094 C 813.367188 297.011719 813.195312 297.5 813.273438 297.949219"/>
+      </svg>
+    </div>
+
+    <p class="hero-name">Косметолог-масажист<span>Ірина Дерев’янко · Київ</span></p>
+
+    <p class="hero-lede">Усі види доглядових процедур: чистка, масаж, депіляція; wellness для тіла та антистрес-сеанси. Індивідуальний догляд у затишному просторі в центрі Києва.</p>
+
+    <div class="hero-cta">
+      <a class="btn btn-primary" href="#booking">Записатися</a>
+      <a class="btn btn-ghost" href="https://t.me/+380685283811" target="_blank" rel="noopener">Написати в Telegram</a>
+    </div>
+  </section>
+
+  <div class="divider wrap" style="text-align:center">
+    <div class="flourish" aria-hidden="true">
+      <svg viewBox="0 250 1500 115" xmlns="http://www.w3.org/2000/svg">
+        <use href="#fl-l"/><use href="#fl-r"/>
+      </svg>
+    </div>
+  </div>
+
+  <section class="about wrap" id="about">
+    <div class="about-grid">
+      <div>
+        <p class="eyebrow">Про майстра</p>
+        <h2 class="section-heading">Iндивiдуальний пiдхiд<br>до кожного клiєнта</h2>
+      </div>
+      <div class="about-body">
+        <p>Ірина Дерев’янко — косметолог-масажист. У «Чарівному Просторі Краси та Релаксу» поєднані доглядові процедури за обличчям, масажні методики для тіла та wellness-ритуали — кожна програма підбирається індивідуально, залежно від стану шкіри, самопочуття та запиту клієнта.</p>
+        <p>Усі процедури за обличчям виконуються за класичним протоколом — демакіяж, очищення, глибоке очищення, тонізація, маска, масаж, крем — і відрізняються складовими та технікою, залежно від задачі: живлення, релакс, ліфтинг чи відновлення.</p>
+        <ul class="tags">
+          <li>Косметологія обличчя</li>
+          <li>Масаж тіла</li>
+          <li>Депіляція · Шугарінг</li>
+          <li>Wellness-ритуали</li>
+          <li>Сеанси відновлення</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="services wrap" id="services">
+    <div class="services-head">
+      <p class="eyebrow">Меню процедур</p>
+      <h2 class="section-heading">Послуги та цiни</h2>
+    </div>
+
+    <ul class="tabs" id="tabs" role="tablist"></ul>
+    <p class="menu-note" id="menu-note"></p>
+    <ul class="menu-list" id="menu-list"></ul>
+  </section>
+
+  <div class="divider wrap" style="text-align:center">
+    <div class="flourish" aria-hidden="true">
+      <svg viewBox="0 250 1500 115" xmlns="http://www.w3.org/2000/svg">
+        <use href="#fl-l"/><use href="#fl-r"/>
+      </svg>
+    </div>
+  </div>
+
+  <section class="booking wrap" id="booking">
+    <p class="eyebrow">Запис</p>
+    <h2 class="section-heading" style="margin-bottom:2rem">Записатися на процедуру</h2>
+
+    <div class="booking-panel">
+      <div class="booking-info">
+        <p style="color:var(--pale); font-weight:700; font-size:1.05rem">Як це працює</p>
+        <p>Заповніть форму — з деталей запису автоматично складеться повідомлення. Натисніть «Відкрити Telegram», щоб надіслати його напряму, або скопіюйте текст і надішліть будь-яким зручним способом.</p>
+        <a class="contact-line" href="tel:+380685283811">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          +38 068 528 3811
+        </a>
+        <a class="contact-line" href="https://t.me/+380685283811" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M21.5 3.5 2.75 10.9c-1.27.51-1.26 1.22-.23 1.54l4.8 1.5 1.85 5.66c.22.62.36.87.8.87.34 0 .49-.15.68-.34l1.64-1.6 3.4 2.53c.63.35 1.08.17 1.24-.58L20.9 4.6c.24-.94-.36-1.36-1.4-1.1z"/></svg>
+          Написати в Telegram
+        </a>
+        <a class="contact-line" href="mailto:ira.derevyanko@gmail.com">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 6-10 7L2 6"/></svg>
+          ira.derevyanko@gmail.com
+        </a>
+        <a class="contact-line" href="https://www.google.com/maps/search/?api=1&amp;query=%D0%B2%D1%83%D0%BB.%20%D0%86%D0%B2%D0%B0%D0%BD%D0%B0%20%D0%A4%D1%80%D0%B0%D0%BD%D0%BA%D0%B0%209%2C%20%D0%9A%D0%B8%D1%97%D0%B2" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+          вул. Івана Франка 9, Київ
+        </a>
+      </div>
+
+      <form id="booking-form">
+        <div class="field-row">
+          <div class="field">
+            <label for="bf-name">Ім’я *</label>
+            <input id="bf-name" name="name" type="text" required placeholder="Ваше ім’я">
+          </div>
+          <div class="field">
+            <label for="bf-phone">Телефон *</label>
+            <input id="bf-phone" name="phone" type="tel" required placeholder="+380 XX XXX XXXX">
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="bf-service">Послуга *</label>
+          <select id="bf-service" name="service" required>
+            <option value="" disabled selected>Оберіть процедуру</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="bf-when">Бажана дата та час</label>
+          <input id="bf-when" name="when" type="text" placeholder="напр. субота, після 14:00">
+        </div>
+
+        <div class="field">
+          <label for="bf-comment">Коментар</label>
+          <textarea id="bf-comment" name="comment" placeholder="Додаткові побажання (необов’язково)"></textarea>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary" id="bf-submit">Відкрити Telegram</button>
+          <button type="button" class="btn btn-ghost" id="bf-copy">Скопіювати текст</button>
+        </div>
+        <p class="status-msg" id="bf-status" role="status"></p>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer id="contact">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <p class="footer-title">Чарівний Простір Краси та Релаксу</p>
+        <p style="color:var(--pale-dim); font-size:.9rem; max-width:32ch">Косметолог-масажист Ірина Дерев’янко. Догляд за обличчям, масаж, депіляція та wellness-процедури в центрі Києва.</p>
+        <div class="social-row">
+          <a class="social-btn" href="https://t.me/+380685283811" target="_blank" rel="noopener" aria-label="Telegram">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M21.5 3.5 2.75 10.9c-1.27.51-1.26 1.22-.23 1.54l4.8 1.5 1.85 5.66c.22.62.36.87.8.87.34 0 .49-.15.68-.34l1.64-1.6 3.4 2.53c.63.35 1.08.17 1.24-.58L20.9 4.6c.24-.94-.36-1.36-1.4-1.1z"/></svg>
+          </a>
+          <a class="social-btn" href="https://www.instagram.com/magic._.space" target="_blank" rel="noopener" aria-label="Instagram">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2.5" y="2.5" width="19" height="19" rx="5"/><circle cx="12" cy="12" r="4.3"/><circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none"/></svg>
+          </a>
+          <a class="social-btn" href="https://wa.me/380685283811" target="_blank" rel="noopener" aria-label="WhatsApp">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5.06-1.33A10 10 0 1 0 12 2Zm0 18.2a8.1 8.1 0 0 1-4.14-1.14l-.3-.18-3 .79.8-2.92-.19-.3A8.18 8.18 0 1 1 12 20.2Zm4.52-6.13c-.25-.12-1.47-.72-1.7-.81-.23-.08-.39-.12-.56.13-.17.25-.64.81-.79.97-.14.17-.29.19-.54.06-.25-.12-1.04-.38-1.98-1.22-.73-.65-1.23-1.46-1.37-1.7-.14-.25-.02-.38.11-.51.11-.11.25-.29.37-.43.12-.15.16-.25.25-.42.08-.17.04-.31-.02-.44-.06-.12-.56-1.35-.77-1.85-.2-.48-.41-.42-.56-.43h-.48c-.17 0-.44.06-.67.31-.23.25-.87.85-.87 2.08s.89 2.41 1.02 2.58c.12.17 1.75 2.67 4.24 3.74.59.26 1.05.41 1.41.52.59.19 1.13.16 1.55.1.47-.07 1.47-.6 1.68-1.18.2-.58.2-1.08.14-1.18-.06-.1-.23-.16-.48-.29Z"/></svg>
+          </a>
+          <a class="social-btn" href="viber://chat?number=%2B380685283811" aria-label="Viber">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.1 2.3c-3.3 0-7.9 1.2-8.4 6.9-.1 1.9-.2 4.5.4 6.9.5 2.1 1.6 3.6 3.2 4.1v2.2c0 .3.3.5.6.4l2.3-1.3c.6.1 1.3.1 2 .1 3.3 0 7.9-1.2 8.4-6.9.1-1.9.2-4.5-.4-6.9-.6-3.3-4.2-5.5-8.1-5.5Zm4.9 12.3c-.2.6-1 1.2-1.7 1.3-.5.1-1 .3-3.6-.8-3-1.3-5-4.3-5.1-4.5-.1-.2-1.1-1.5-1.1-2.8 0-1.4.7-2 .9-2.3.2-.2.5-.3.7-.3h.5c.2 0 .4 0 .5.4.2.5.7 1.7.7 1.9.1.1.1.3 0 .4-.1.2-.1.3-.3.5-.1.2-.3.4-.4.5-.1.1-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.1 1 2.1 1.4 2.4 1.5.3.1.5.1.6-.1.2-.2.7-.8.9-1.1.2-.2.4-.2.6-.1.2.1 1.4.7 1.6.8.2.1.4.2.4.3.1.2.1.6-.1 1.1Zm-.5-6.5c-.1 0-.2 0-.2-.1-.1-1.5-1.3-2.7-2.8-2.8-.1 0-.2-.1-.2-.2s.1-.2.2-.2c1.7.1 3 1.4 3.1 3.1 0 .1-.1.2-.1.2Zm1.6.4c-.1 0-.2-.1-.2-.2-.1-2.4-2-4.4-4.5-4.5-.1 0-.2-.1-.2-.2s.1-.2.2-.2c2.7.1 4.8 2.2 4.9 4.9 0 .1-.1.2-.2.2Z"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div>
+        <p class="footer-title">Контакти</p>
+        <a class="footer-line" href="tel:+380685283811">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          +38 068 528 3811
+        </a>
+        <a class="footer-line" href="mailto:ira.derevyanko@gmail.com">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 6-10 7L2 6"/></svg>
+          ira.derevyanko@gmail.com
+        </a>
+        <a class="footer-line" href="https://www.google.com/maps/search/?api=1&amp;query=%D0%B2%D1%83%D0%BB.%20%D0%86%D0%B2%D0%B0%D0%BD%D0%B0%20%D0%A4%D1%80%D0%B0%D0%BD%D0%BA%D0%B0%209%2C%20%D0%9A%D0%B8%D1%97%D0%B2" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+          вул. Івана Франка 9, Київ
+        </a>
+      </div>
+
+      <div>
+        <p class="footer-title">Розділи</p>
+        <a class="footer-line" href="#about" style="gap:0">Про майстра</a>
+        <a class="footer-line" href="#services" style="gap:0">Послуги та ціни</a>
+        <a class="footer-line" href="#booking" style="gap:0">Запис</a>
+      </div>
+    </div>
+
+    <p class="copyright">© 2026 Чарівний Простір Краси та Релаксу · Ірина Дерев’янко</p>
+  </div>
+</footer>
+
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <path id="fl-l" fill="currentColor" d="M 130.042969 308.640625 C 140.578125 308.675781 153.878906 308.78125 166.09375 309.085938 Z M 122.261719 302.132812 C 121 302.765625 108.28125 300.136719 106.28125 299.136719 C 104.285156 298.136719 93.296875 296.140625 73.324219 275.167969 C 73.324219 275.167969 94.296875 291.148438 100.289062 293.144531 C 106.28125 295.140625 117.269531 295.140625 120.265625 296.140625 C 123.261719 297.140625 124.261719 301.132812 122.261719 302.132812 M 686.078125 296.640625 C 686.078125 296.640625 679.09375 291.648438 644.167969 290.648438 C 644.140625 290.648438 644.117188 290.648438 644.09375 290.648438 C 643.050781 290.691406 620.125 291.691406 617.179688 293.644531 C 614.164062 295.640625 546.746094 293.144531 541.15625 293.644531 C 537.316406 293.984375 521.683594 295.558594 470.3125 318.46875 C 465.1875 320.753906 459.808594 322.410156 454.289062 323.410156 C 437.007812 326.542969 399.058594 331.894531 376.453125 323.605469 C 346.492188 312.621094 274.578125 312.621094 273.578125 311.621094 C 272.582031 310.621094 234.625 309.625 205.660156 298.636719 C 205.660156 298.636719 202.664062 296.640625 177.695312 296.640625 C 152.726562 296.640625 128.753906 295.640625 123.761719 292.644531 C 118.859375 289.703125 98.125 282.011719 86.097656 267.152344 C 85.308594 266.175781 84.308594 266.175781 84.019531 266.1875 C 82.621094 266.25 81.257812 267.277344 85.457031 272.210938 C 90.417969 278.039062 98.21875 284.195312 101.382812 286.601562 C 101.589844 286.757812 101.410156 287.078125 101.175781 286.976562 C 94.546875 284.082031 68.84375 271.734375 49.851562 246.699219 C 49.851562 246.699219 45.855469 242.621094 47.652344 250.683594 C 48.636719 255.09375 50.992188 259.082031 54.335938 262.117188 C 57.5 264.984375 61.269531 268.542969 61.835938 269.671875 C 62.835938 271.671875 60.835938 273.667969 64.832031 276.664062 C 68.828125 279.660156 97.792969 308.625 116.769531 308.625 C 120.167969 308.625 124.757812 308.625 130.035156 308.640625 C 130.035156 308.644531 127.257812 315.117188 132.25 316.117188 C 137.246094 317.113281 147.234375 318.113281 148.230469 322.109375 C 148.230469 322.109375 156.222656 330.097656 147.234375 331.097656 C 138.242188 332.097656 137.246094 334.09375 134.25 336.09375 C 131.253906 338.089844 124.261719 341.085938 120.265625 341.085938 C 116.269531 341.085938 112.273438 351.074219 115.273438 352.074219 C 118.269531 353.070312 117.269531 350.074219 124.261719 345.082031 C 131.253906 340.085938 136.746094 340.585938 139.742188 338.589844 C 142.738281 336.589844 142.738281 335.59375 144.734375 334.59375 C 146.734375 333.59375 156.074219 333.960938 158.144531 328.535156 C 160.21875 323.109375 160.21875 323.109375 158.21875 317.113281 C 156.222656 311.125 166.089844 309.089844 166.097656 309.085938 C 181.953125 309.488281 195.964844 310.234375 199.667969 311.621094 C 207.660156 314.617188 314.261719 332.027344 324.019531 329.101562 C 334.003906 326.105469 382.445312 341.585938 396.429688 342.585938 C 410.414062 343.582031 447.367188 340.585938 466.34375 333.59375 C 485.320312 326.605469 513.289062 311.621094 520.277344 310.621094 C 527.269531 309.625 547.246094 311.621094 562.226562 314.617188 C 577.210938 317.613281 596.1875 318.613281 605.175781 310.621094 C 614.164062 302.632812 623.152344 301.632812 633.140625 303.632812 C 643.128906 305.628906 665.101562 304.628906 673.09375 300.636719 C 679.085938 297.640625 683.394531 298.382812 685.171875 298.9375 C 685.9375 299.179688 686.808594 298.757812 686.949219 297.96875 C 687.027344 297.515625 686.855469 297.027344 686.078125 296.640625"/>
+    <path id="fl-r" fill="currentColor" d="M 1334.128906 309.070312 C 1346.34375 308.761719 1359.644531 308.660156 1370.179688 308.625 Z M 1379.957031 296.121094 C 1382.953125 295.125 1393.9375 295.125 1399.929688 293.125 C 1405.925781 291.128906 1426.898438 275.148438 1426.898438 275.148438 C 1406.921875 296.121094 1395.9375 298.121094 1393.9375 299.121094 C 1391.941406 300.117188 1379.222656 302.746094 1377.957031 302.117188 C 1375.960938 301.117188 1376.960938 297.121094 1379.957031 296.121094 M 813.273438 297.949219 C 813.414062 298.742188 814.285156 299.164062 815.050781 298.921875 C 816.828125 298.363281 821.136719 297.621094 827.128906 300.617188 C 835.117188 304.613281 857.09375 305.613281 867.078125 303.613281 C 877.066406 301.617188 886.054688 302.613281 895.046875 310.605469 C 904.035156 318.59375 923.011719 317.597656 937.992188 314.601562 C 952.976562 311.605469 972.949219 309.605469 979.941406 310.605469 C 986.933594 311.605469 1014.898438 326.585938 1033.875 333.578125 C 1052.855469 340.570312 1089.808594 343.566406 1103.792969 342.566406 C 1117.773438 341.566406 1166.214844 326.085938 1176.203125 329.082031 C 1185.960938 332.007812 1292.5625 314.601562 1300.550781 311.605469 C 1304.257812 310.214844 1318.269531 309.46875 1334.125 309.070312 C 1334.128906 309.070312 1344 311.105469 1342.003906 317.097656 C 1340.003906 323.089844 1340.003906 323.089844 1342.074219 328.515625 C 1344.144531 333.941406 1353.488281 333.578125 1355.484375 334.578125 C 1357.484375 335.574219 1357.484375 336.574219 1360.480469 338.570312 C 1363.476562 340.570312 1368.96875 340.070312 1375.960938 345.0625 C 1382.953125 350.058594 1381.953125 353.054688 1384.949219 352.054688 C 1387.945312 351.054688 1383.949219 341.066406 1379.957031 341.066406 C 1375.960938 341.066406 1368.96875 338.070312 1365.972656 336.074219 C 1362.976562 334.078125 1361.976562 332.078125 1352.988281 331.082031 C 1344 330.082031 1351.988281 322.089844 1351.988281 322.089844 C 1352.988281 318.097656 1362.976562 317.097656 1367.96875 316.097656 C 1372.964844 315.101562 1370.1875 308.625 1370.1875 308.625 C 1375.464844 308.609375 1380.054688 308.609375 1383.453125 308.609375 C 1402.429688 308.609375 1431.394531 279.644531 1435.386719 276.648438 C 1439.382812 273.648438 1437.386719 271.652344 1438.386719 269.65625 C 1438.949219 268.523438 1442.722656 264.96875 1445.882812 262.097656 C 1449.230469 259.066406 1451.582031 255.074219 1452.566406 250.667969 C 1454.367188 242.605469 1450.371094 246.683594 1450.371094 246.683594 C 1431.378906 271.714844 1405.675781 284.066406 1399.046875 286.957031 C 1398.8125 287.058594 1398.632812 286.738281 1398.835938 286.582031 C 1402 284.175781 1409.800781 278.019531 1414.761719 272.191406 C 1418.964844 267.257812 1417.601562 266.230469 1416.199219 266.171875 C 1415.914062 266.160156 1414.914062 266.160156 1414.125 267.136719 C 1402.097656 281.992188 1381.363281 289.683594 1376.460938 292.628906 C 1371.464844 295.625 1347.496094 296.621094 1322.527344 296.621094 C 1297.554688 296.621094 1294.558594 298.621094 1294.558594 298.621094 C 1265.59375 309.605469 1227.640625 310.605469 1226.640625 311.605469 C 1225.644531 312.601562 1153.730469 312.601562 1123.765625 323.589844 C 1101.164062 331.878906 1063.214844 326.523438 1045.933594 323.394531 C 1040.414062 322.394531 1035.03125 320.734375 1029.910156 318.449219 C 978.539062 295.539062 962.90625 293.96875 959.0625 293.625 C 953.476562 293.125 886.054688 295.625 883.042969 293.625 C 880.09375 291.671875 857.171875 290.675781 856.128906 290.632812 C 856.105469 290.628906 856.082031 290.628906 856.054688 290.628906 C 821.128906 291.632812 814.144531 296.621094 814.144531 296.621094 C 813.367188 297.011719 813.195312 297.5 813.273438 297.949219"/>
+  </defs>
+</svg>
+
+<script>
+(function(){
+  "use strict";
+
+  var CATEGORIES = [
+    { id:'face', label:'Обличчя', note:'Усі процедури виконуються за класичним протоколом (демакіяж, очищення, глибоке очищення, тонізація, маска, масаж, крем) і відрізняються складовими та масажною технікою.', items:[
+      { name:'Ознайомча процедура + консультація', duration:'1 год процедура / 30 хв консультація', price:'1 295 грн', desc:'Виконується за класичним протоколом без активних засобів.' },
+      { name:'Гігієнічна / комбінована чистка шкіри обличчя', duration:'1 год 30 хв', price:'від 1 495 грн', desc:'Вартість залежить від складності.' },
+      { name:'Пілінги', duration:'1 год', price:'від 1 865 грн', desc:'Вартість залежить від складу пілінга та виробника.' },
+      { name:'Органічний догляд', duration:'1 год', price:'1 375 грн', desc:'З використанням різних органічних складових: глини, водорості, органічні та ефірні олії тощо.' },
+      { name:'Космоцевтичний догляд', duration:'1–1,5 год', price:'від 1 715 грн', desc:'Активні засоби (карбоксітерапія, озонотерапія тощо) та глибинні масажні техніки.' },
+      { name:'Лікувальний догляд', duration:'1–1,5 год', price:'від 1 455 грн', desc:'Купероз / акне / освітлення / зневоднення тощо — залежно від складності та проблематики.' },
+      { name:'Гуаша-масаж обличчя + релакс-масаж', duration:'1 год 30 хв', price:'1 655 грн', desc:'Для чутливого стану шкіри — антикуперозний та дренажний ефекти.' },
+      { name:'Догляд «Архітектор Краси»', duration:'1 год 30 хв', price:'1 765 грн', desc:'Активні засоби (сироватки, активатори) та авторська масажна техніка «Фітнес-масаж».' },
+      { name:'Ліфтінгова процедура «Face Up»', duration:'1 год 30 хв', price:'1 935 грн', desc:'Міофасціальний моделюючий або буккальний (інтрооральний) масаж + альгінатна маска.' },
+      { name:'Безін’єкційна біоревіталізація / ліфтинг', duration:'1 год 30 хв', price:'від 1 795 грн', desc:'Можливе використання мезороллера за домовленістю.' },
+      { name:'Янтарне сяяння', duration:'1 год 30 хв', price:'1 545 грн', desc:'Масаж янтарними мішечками з янтарною кислотою — для всіх типів шкіри, особливо тьмяної та постакне.' },
+      { name:'Догляд за губами «Солодкі вуста»', duration:'у процедурі', price:'165 грн', desc:'Цукровий пілінг-скраб + маска з пробіотиками + живильний бальзам.' },
+      { name:'Тейпування', duration:'додатково', price:'від 195 грн', desc:'За показанням або побажанням, після основної процедури.' },
+      { name:'Комбінований масаж обличчя', duration:'30–40 хв', price:'включено', desc:'Мануальний масаж + баночки, бамбукові палички, гуаша тощо — у вартості процедур або абонемента.' }
+    ]},
+    { id:'body', label:'Тіло', note:'Масажні методики для тіла — від глибокого релаксу до інтенсивної роботи з тілом.', items:[
+      { name:'Тілесна терапія', duration:'90 / 120 хв', price:'1 895 / 2 525 грн', desc:'Синергія різних масажних технік та остеопатичних методик.' },
+      { name:'Загальний / лімфодренажний / релакс-масаж', duration:'60 / 90 / 120 хв', price:'1 145 / 1 725 / 2 295 грн', desc:'60 хв — задня поверхня; 90 хв — задня і передня; 120 хв — обидві поверхні + живіт та голова.' },
+      { name:'Креольський масаж бамбуковими паличками', duration:'60 / 90 / 120 хв', price:'1 205 / 1 785 / 2 395 грн', desc:'Загальний або окремо для частин тіла; можливе поєднання з мануальним масажем.' },
+      { name:'Масаж спини / комбінований', duration:'45–60 хв', price:'975 грн', desc:'Ручний масаж, за бажанням у поєднанні з вакуумними банками або бамбуковими паличками.' },
+      { name:'Антицелюлітний масаж + обгортання', duration:'60 / 90 хв', price:'1 305 / 1 505 грн', desc:'Масаж спеціальними засобами + обгортання маскою з активними компонентами.' },
+      { name:'Преміум-масаж Egyptian Style Massage', duration:'2,5 год', price:'3 225 грн', desc:'Акційна пропозиція.' }
+    ]},
+    { id:'zonal', label:'Зональні догляди', note:'Точкові техніки для рук, ніг, спини та голови — самостійно або як доповнення до основного догляду.', items:[
+      { name:'Для рук «Лапки кішечки»', duration:'30 хв', price:'355 грн', desc:'Обгортання + масаж.' },
+      { name:'Для ніг «Легкі ніжки»', duration:'30 хв', price:'355 грн', desc:'Компрес-обгортання + масаж.' },
+      { name:'Некласичний масаж спини з прогрівом і масажем голови', duration:'30–45 хв', price:'635 грн', desc:'Або масаж шийно-комірцевої зони + масаж голови.' },
+      { name:'Перкусійно-вібраційний масаж бамбуковими палицями', duration:'20–30 хв', price:'475 грн', desc:'Може виконуватись на початку будь-якої процедури для кращого розслаблення.' },
+      { name:'Тайський масаж ніг', duration:'40–50 хв', price:'705 грн', desc:'' },
+      { name:'Вісцеральний масаж «Жива»', duration:'30–40 хв', price:'805 грн', desc:'Вісцеральні та остеопатичні техніки + маска-обгортання для живота.' },
+      { name:'«Push Up» догляд для зони декольте та грудей', duration:'30–40 хв', price:'від 755 грн', desc:'Пілінг / скраб, маска та масаж.' }
+    ]},
+    { id:'depilation', label:'Депіляція', note:'Депіляція та шугарінг за зонами.', items:[
+      { name:'Зона пахв', duration:'', price:'225 грн', desc:'' },
+      { name:'Зона бікіні', duration:'бікіні / ультрабікіні', price:'415 / 585 грн', desc:'' },
+      { name:'Руки', duration:'', price:'325–415 грн', desc:'' },
+      { name:'Ноги', duration:'до коліна / вище коліна / повністю', price:'405 / 445 / 775 грн', desc:'' },
+      { name:'Обличчя', duration:'', price:'275 грн', desc:'' },
+      { name:'Живіт / поперек / сідниці', duration:'', price:'215 грн', desc:'' },
+      { name:'Спина', duration:'', price:'715 грн', desc:'' }
+    ]},
+    { id:'wellness', label:'Wellness', note:'Wellness-процедури для тіла та обличчя — довші ритуали для глибокого відновлення.', items:[
+      { name:'Стоун-терапія + бонус', duration:'2,5–3 год', price:'3 795 грн', desc:'Масаж для тіла та обличчя гарячим вулканічним камінням.' },
+      { name:'«Шоколадна насолода»', duration:'2 год', price:'2 575 грн', desc:'Обгортання тіла шоколадною сумішшю + авторський relax-масаж тіла.' },
+      { name:'Аромамасаж', duration:'1 год 30 хв', price:'2 155 грн', desc:'Ексклюзивна масажна техніка в поєднанні з ароматерапією.' },
+      { name:'«Райське Яблуко»', duration:'2 год', price:'2 445 грн', desc:'Скрабування свіжими яблуками по органічному яблучному пілінгу + дві масажні техніки.' },
+      { name:'Детокс', duration:'2 год', price:'2 365 грн', desc:'Обгортання-детокс + лімфодренажний масаж.' },
+      { name:'Tone Up', duration:'2 год', price:'2 605 грн', desc:'Кислотний пілінг для тіла, ампула та маска для підвищення тонусу шкіри.' }
+    ]},
+    { id:'recovery', label:'Відновлення', note:'Сеанси відновлення — робота з тілом і станом через дотик, звук і тепло.', items:[
+      { name:'Остеопатична корекція / міофасціальний баланс', duration:'1 год 30 хв', price:'2 075 грн', desc:'' },
+      { name:'Звукотерапія «Нада-масаж»', duration:'40–60 хв', price:'2 005 грн', desc:'Масаж тібетськими чашами, що співають.' },
+      { name:'Чакротерапія', duration:'60–90 хв', price:'1 777 грн', desc:'Підготовка обов’язкова, обговорюється окремо.' }
+    ]},
+    { id:'extra', label:'Додатково', note:'', items:[
+      { name:'Подарунковий сертифікат', duration:'', price:'залежно від процедури', desc:'' },
+      { name:'Абонемент на курс масажу для обличчя (10 процедур + 2 бонусні)', duration:'', price:'8 855 грн', desc:'За умови: ознайомча процедура з консультацією + закупка домашніх доглядових засобів від 5 одиниць.' }
+    ]}
+  ];
+
+  // ---- render tabs + menu ----
+  var tabsEl = document.getElementById('tabs');
+  var listEl = document.getElementById('menu-list');
+  var noteEl = document.getElementById('menu-note');
+  var serviceSelect = document.getElementById('bf-service');
+
+  CATEGORIES.forEach(function(cat, i){
+    var li = document.createElement('li');
+    var btn = document.createElement('button');
+    btn.className = 'tab';
+    btn.type = 'button';
+    btn.textContent = cat.label;
+    btn.setAttribute('role','tab');
+    btn.setAttribute('aria-selected', i === 0 ? 'true' : 'false');
+    btn.addEventListener('click', function(){ showCategory(cat.id); });
+    li.appendChild(btn);
+    tabsEl.appendChild(li);
+
+    var group = document.createElement('optgroup');
+    group.label = cat.label;
+    cat.items.forEach(function(item){
+      var opt = document.createElement('option');
+      opt.value = cat.label + ' — ' + item.name;
+      opt.textContent = item.name + (item.price ? ' (' + item.price + ')' : '');
+      group.appendChild(opt);
+    });
+    serviceSelect.appendChild(group);
+  });
+
+  function showCategory(id){
+    var cat = CATEGORIES.filter(function(c){ return c.id === id; })[0];
+    if(!cat) return;
+    Array.prototype.forEach.call(tabsEl.querySelectorAll('.tab'), function(btn){
+      btn.setAttribute('aria-selected', btn.textContent === cat.label ? 'true' : 'false');
+    });
+    noteEl.textContent = cat.note || '';
+    noteEl.hidden = !cat.note;
+    listEl.innerHTML = '';
+    cat.items.forEach(function(item){
+      var li = document.createElement('li');
+      li.className = 'menu-item';
+      var name = document.createElement('p');
+      name.className = 'menu-name';
+      name.textContent = item.name;
+      var price = document.createElement('p');
+      price.className = 'menu-price';
+      price.textContent = item.price;
+      li.appendChild(name);
+      li.appendChild(price);
+      if(item.duration){
+        var meta = document.createElement('div');
+        meta.className = 'menu-meta';
+        var dur = document.createElement('span');
+        dur.className = 'menu-duration';
+        dur.textContent = item.duration;
+        meta.appendChild(dur);
+        li.appendChild(meta);
+      }
+      if(item.desc){
+        var desc = document.createElement('p');
+        desc.className = 'menu-desc';
+        desc.textContent = item.desc;
+        li.appendChild(desc);
+      }
+      listEl.appendChild(li);
+    });
+  }
+
+  showCategory(CATEGORIES[0].id);
+
+  // ---- booking form ----
+  var form = document.getElementById('booking-form');
+  var statusEl = document.getElementById('bf-status');
+  var copyBtn = document.getElementById('bf-copy');
+
+  function buildMessage(){
+    var name = document.getElementById('bf-name').value.trim();
+    var phone = document.getElementById('bf-phone').value.trim();
+    var service = document.getElementById('bf-service').value;
+    var when = document.getElementById('bf-when').value.trim();
+    var comment = document.getElementById('bf-comment').value.trim();
+
+    var lines = [
+      'Доброго дня! Хочу записатися до «Чарівний Простір Краси та Релаксу».',
+      '',
+      'Ім’я: ' + (name || '—'),
+      'Телефон: ' + (phone || '—'),
+      'Послуга: ' + (service || '—')
+    ];
+    if (when) lines.push('Бажана дата/час: ' + when);
+    if (comment) lines.push('Коментар: ' + comment);
+    lines.push('', 'Очікую на підтвердження запису.');
+    return lines.join('\n');
+  }
+
+  function validate(){
+    var name = document.getElementById('bf-name').value.trim();
+    var phone = document.getElementById('bf-phone').value.trim();
+    var service = document.getElementById('bf-service').value;
+    if(!name || !phone || !service){
+      statusEl.textContent = 'Будь ласка, заповніть ім’я, телефон і оберіть послугу.';
+      statusEl.classList.add('err');
+      return false;
+    }
+    statusEl.classList.remove('err');
+    return true;
+  }
+
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    if(!validate()) return;
+    var msg = buildMessage();
+    try{
+      if(navigator.clipboard && navigator.clipboard.writeText){
+        navigator.clipboard.writeText(msg).catch(function(){});
+      }
+    }catch(err){}
+    window.open('https://t.me/+380685283811?text=' + encodeURIComponent(msg), '_blank', 'noopener');
+    statusEl.textContent = 'Telegram відкрито в новій вкладці — текст запису також скопійовано, просто вставте та надішліть.';
+  });
+
+  copyBtn.addEventListener('click', function(){
+    if(!validate()) return;
+    var msg = buildMessage();
+    try{
+      if(navigator.clipboard && navigator.clipboard.writeText){
+        navigator.clipboard.writeText(msg).then(function(){
+          statusEl.classList.remove('err');
+          statusEl.textContent = 'Текст запису скопійовано в буфер обміну.';
+        }).catch(function(){
+          statusEl.textContent = 'Не вдалося скопіювати автоматично — виділіть текст і скопіюйте вручну.';
+        });
+      } else {
+        statusEl.textContent = 'Копіювання недоступне в цьому браузері.';
+      }
+    }catch(err){
+      statusEl.textContent = 'Копіювання недоступне в цьому браузері.';
+    }
+  });
+})();
+</script>
